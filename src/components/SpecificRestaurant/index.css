@@ -1,0 +1,81 @@
+.Banner {
+  background-image: url('https://res.cloudinary.com/dh8afj2yd/image/upload/v1670930064/Mini%20Projects%20Library%20-%20tastyKitchensApp/Frame_279_z0xkkd.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  padding-left: 50px;
+  margin-top: 30px;
+}
+.app-container {
+  height: 100vh;
+  overflow-y: auto;
+}
+.restaurant-img {
+  width: 120px;
+  height: 120px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  align-self: center;
+}
+.Restaurant-details {
+  color: #ffffff;
+  margin-left: 30px;
+}
+.rating-cost-container {
+  display: flex;
+  flex-direction: row;
+}
+.ratings-container {
+  display: flex;
+  flex-direction: column;
+}
+.type {
+  font-size: 14px;
+}
+.rating-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+}
+.cost {
+  color: #183b56;
+  align-self: center;
+  margin: 0px;
+  margin-top: 6px;
+}
+.Rating {
+  padding: 0px;
+  margin: 0px;
+  font-size: 12px;
+}
+.location {
+  color: antiquewhite;
+  font-size: 14px;
+}
+.Review {
+  font-size: 12px;
+}
+.hrLine {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.food-items-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+@media screen and (min-width: 768px) {
+  .restaurant-img {
+    border-radius: 5px;
+    width: 300px;
+    height: 200px;
+    align-self: flex-start;
+  }
+  .food-items-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

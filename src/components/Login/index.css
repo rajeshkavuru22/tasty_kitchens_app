@@ -1,0 +1,136 @@
+.bg-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+.form-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.login-logo {
+  display: flex;
+  padding-left: 30px;
+  height: 300px;
+  width: 300px;
+  flex-shrink: 1;
+  align-self: flex-end;
+}
+.logo-container {
+  display: none;
+}
+@media screen and (min-width: 367px) and (max-width: 767px) {
+  .login-logo {
+    width: 350px;
+    height: 350px;
+  }
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.login-heading {
+  color: #000000;
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-size: 24px;
+}
+.label {
+  color: #475569;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.input {
+  background: #e2e8f0;
+  border-radius: 2px;
+  padding: 10px;
+  color: #000000;
+  border: none;
+}
+.error-msg {
+  color: #ef4444;
+  font-size: 10px;
+}
+.login-btn {
+  background: #f7931e;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  color: #ffffff;
+  margin-top: 25px;
+  cursor: pointer;
+}
+.Container {
+  width: 100%;
+}
+.image-container {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+  }
+  .login-heading {
+    align-self: center;
+  }
+  .login-logo {
+    display: none;
+  }
+  .image-container {
+    display: flex;
+    width: 50%;
+    height: 100%;
+  }
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    width: 456px;
+    height: 523px;
+    background: #fefeff;
+    box-shadow: 0px 8px 40px rgba(7, 7, 7, 0.08);
+    border-radius: 8px;
+    padding: 50px;
+  }
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .logo {
+    width: 50px;
+    height: 40px;
+    align-self: center;
+  }
+  .logo-name {
+    margin: 0px;
+    color: #f7931e;
+    font-size: 22px;
+    font-family: 'DM Sans';
+    font-style: italic;
+  }
+  .login {
+    color: #000000;
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-size: 24px;
+    align-self: center;
+  }
+  .food-img {
+    width: 100%;
+  }
+}
