@@ -173,4 +173,4 @@ class Cart extends Component {
   }
 }
 
-export default Car
+export default Cart
