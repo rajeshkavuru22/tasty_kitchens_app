@@ -17,6 +17,26 @@ const Header = props => {
     history.replace('/login')
   }
 
+  const navbarTabButtons = () => (
+    <>
+      <ul className="tabs-list">
+        <li className="tab-item" key={tabItemsList[0].id}>
+          <Link to="/" className="link">
+            Home
+          </Link>
+        </li>
+        <li className="tab-item" key={tabItemsList[1].id}>
+          <Link to="/cart" className="link">
+            Cart
+          </Link>
+        </li>
+      </ul>
+      <button className="logout-btn" type="button" onClick={onLogout}>
+        Logout
+      </button>
+    </>
+  )
+
   const popupMenu = () => (
     <Popup
       modal
@@ -29,21 +49,7 @@ const Header = props => {
     >
       {close => (
         <div className="popup-tabs">
-          <ul className="tabs-list">
-            <li className="tab-item">
-              <Link to="/" className="link">
-                Home
-              </Link>
-            </li>
-            <li className="tab-item">
-              <Link to="/cart" className="link">
-                Cart
-              </Link>
-            </li>
-          </ul>
-          <button className="logout-btn" type="button" onClick={onLogout}>
-            Logout
-          </button>
+          {navbarTabButtons()}
           <button className="trans-btn" type="button" onClick={close}>
             <RiCloseCircleFill className="icon" />
           </button>
@@ -65,23 +71,7 @@ const Header = props => {
         <h1 className="website-name">Tasty Kitchens</h1>
       </div>
       <div className="popup-hamburger-menu">{popupMenu()}</div>
-      <div className="tools-container">
-        <ul className="tabs-list">
-          <li className="tab-item" key={tabItemsList[0].id}>
-            <Link to="/" className="link">
-              Home
-            </Link>
-          </li>
-          <li className="tab-item" key={tabItemsList[1].id}>
-            <Link to="/cart" className="link">
-              Cart
-            </Link>
-          </li>
-        </ul>
-        <button className="logout-btn" type="button" onClick={onLogout}>
-          Logout
-        </button>
-      </div>
+      <div className="tools-container">{navbarTabButtons()}</div>
     </nav>
   )
 }

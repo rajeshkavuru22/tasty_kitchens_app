@@ -52,7 +52,7 @@ class Login extends Component {
       <form className="form-container">
         <img
           src="https://res.cloudinary.com/dh8afj2yd/image/upload/v1670743980/Mini%20Projects%20Library%20-%20tastyKitchensApp/Rectangle_1457_x4gz96.png"
-          alt="website login"
+          alt="website dp"
           className="login-logo"
         />
         <div className="logo-container">

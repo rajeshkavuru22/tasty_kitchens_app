@@ -28,6 +28,9 @@ class SpecificRestaurant extends Component {
 
   getRestaurantItemsDetailsList = async () => {
     this.setState({apiResponseStatus: apiResponsesList.inProgress})
+    const cartData = localStorage.getItem('cartData')
+    const cartList = JSON.parse(cartData)
+    console.log(cartList)
     const {match} = this.props
     const {params} = match
     const {id} = params
@@ -64,12 +67,29 @@ class SpecificRestaurant extends Component {
         rating: each.rating,
         itemsInCart: 0,
       }))
-      console.log(restaurantDetails, foodItemsList)
-      this.setState({
-        apiResponseStatus: apiResponsesList.success,
-        restaurantDetails,
-        foodItemsList,
-      })
+
+      const checkItems = eachItem => {
+        const filteredItem = cartList.filter(each => each.id === eachItem.id)
+        if (filteredItem.length === 0) {
+          return eachItem
+        }
+        return {...filteredItem[0]}
+      }
+
+      if (cartList === null) {
+        this.setState({
+          apiResponseStatus: apiResponsesList.success,
+          restaurantDetails,
+          foodItemsList,
+        })
+      } else {
+        const modifiedList = foodItemsList.map(eachItem => checkItems(eachItem))
+        this.setState({
+          apiResponseStatus: apiResponsesList.success,
+          restaurantDetails,
+          foodItemsList: modifiedList,
+        })
+      }
     } else {
       this.setState({apiResponseStatus: apiResponsesList.failure})
     }
@@ -77,11 +97,9 @@ class SpecificRestaurant extends Component {
 
   addItemToCart = Item => {
     const {foodItemsList} = this.state
-    console.log(foodItemsList)
     const List = [...foodItemsList]
     const modifiedItem = {...Item, itemsInCart: Item.itemsInCart + 1}
     const index = foodItemsList.indexOf(Item)
-    console.log(index, modifiedItem)
     List[index] = {...modifiedItem}
     this.setState({foodItemsList: List})
   }
@@ -91,7 +109,6 @@ class SpecificRestaurant extends Component {
     const List = [...foodItemsList]
     const modifiedItem = {...Item, itemsInCart: Item.itemsInCart + 1}
     const index = foodItemsList.indexOf(Item)
-    console.log(index, modifiedItem)
     List[index] = {...modifiedItem}
     this.setState({foodItemsList: List})
   }
@@ -101,7 +118,6 @@ class SpecificRestaurant extends Component {
     const List = [...foodItemsList]
     const modifiedItem = {...Item, itemsInCart: Item.itemsInCart - 1}
     const index = foodItemsList.indexOf(Item)
-    console.log(index, modifiedItem)
     List[index] = {...modifiedItem}
     this.setState({foodItemsList: List})
   }
@@ -115,8 +131,15 @@ class SpecificRestaurant extends Component {
   render() {
     const {restaurantDetails, foodItemsList, apiResponseStatus} = this.state
 
-    const cartItems = foodItemsList.filter(each => each.itemsInCart > 0)
-    localStorage.setItem('cartData', JSON.stringify(cartItems))
+    const cartData = localStorage.getItem('cartData')
+    console.log(`local: -${cartData}-`)
+
+    if (cartData !== []) {
+      const cartItems = foodItemsList.filter(each => each.itemsInCart > 0)
+      if (cartItems.length > 0) {
+        localStorage.setItem('cartData', JSON.stringify(cartItems))
+      }
+    }
 
     const {
       name,

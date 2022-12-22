@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import Header from '../Header'
 import Footer from '../Footer'
+import Counter from '../Counter'
 import './index.css'
 
 class Cart extends Component {
@@ -68,49 +69,26 @@ class Cart extends Component {
   cartItem = Item => {
     const {id, name, imageUrl, cost, itemsInCart} = Item
 
-    const incrementItem = () => {
-      this.onIncrementItem(Item)
-    }
-
-    const decrementItem = () => {
-      this.onDecrementItem(Item)
-    }
-
     return (
-      <div className="cart-item" testid="cartItem" key={id}>
+      <li className="cart-item" testid="cartItem" key={id}>
         <div className="img-name-container">
           <img src={imageUrl} alt="food item" className="item-image" />
-          <h1 className="NAME">{name}</h1>
         </div>
         <div className="item-details">
           <h1 className="item-name">{name}</h1>
-          <div className="item-count-container">
-            <button
-              type="button"
-              className="count-btn"
-              testid="decrement-quantity"
-              onClick={decrementItem}
-            >
-              -
-            </button>
-            <p className="pages" testid="item-quantity">
-              {itemsInCart}
-            </p>
-            <button
-              type="button"
-              className="count-btn"
-              testid="increment-quantity"
-              onClick={incrementItem}
-            >
-              +
-            </button>
-          </div>
+          <Counter
+            Item={Item}
+            itemsInCart={itemsInCart}
+            incrementItem={this.onIncrementItem}
+            decrementItem={this.onDecrementItem}
+            key={itemsInCart}
+          />
           <div className="cost-container">
             <BiRupee className="price" />
             <p className="price">{cost}.00</p>
           </div>
         </div>
-      </div>
+      </li>
     )
   }
 
@@ -144,9 +122,9 @@ class Cart extends Component {
             <p className="column">Quantity</p>
             <p className="column">Price</p>
           </div>
-          <div className="cart-container">
+          <ul className="cart-container">
             {cartData.map(Item => this.cartItem(Item))}
-          </div>
+          </ul>
           <hr className="hr_line" />
           <div className="order-details-container">
             <h1 className="order-heading">Order Total:</h1>

@@ -2,6 +2,7 @@ import {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {MdSort} from 'react-icons/md'
 import {AiFillStar} from 'react-icons/ai'
+import {BsSearch} from 'react-icons/bs'
 import Loader from 'react-loader-spinner'
 import Slider from 'react-slick'
 import Cookies from 'js-cookie'
@@ -37,6 +38,8 @@ class Home extends Component {
     restaurantsApiResponseStatus: apiResponsesList.initial,
     sortByValue: sortByOptions[1].value,
     activePage: 1,
+    searchText: '',
+    searchInput: '',
   }
 
   componentDidMount() {
@@ -65,19 +68,19 @@ class Home extends Component {
         offersApiResponseStatus: apiResponsesList.success,
         offersList,
       })
-      console.log(offersList)
     } else {
-      this.setState({offersApiResponseStatus: apiResponsesList.failure})
+      this.setState({
+        offersApiResponseStatus: apiResponsesList.failure,
+      })
     }
   }
 
   getRestaurantsData = async () => {
     this.setState({restaurantsApiResponseStatus: apiResponsesList.inProgress})
-    const {activePage, sortByValue} = this.state
+    const {activePage, sortByValue, searchInput} = this.state
     const limit = 9
     const offset = (activePage - 1) * limit
-    console.log(offset)
-    const url = `https://apis.ccbp.in/restaurants-list?offset=${offset}&limit=${limit}&sort_by_rating=${sortByValue}`
+    const url = `https://apis.ccbp.in/restaurants-list?search=${searchInput}&offset=${offset}&limit=${limit}&sort_by_rating=${sortByValue}`
     const JwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -88,6 +91,7 @@ class Home extends Component {
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
+      console.log(data, activePage, searchInput, offset)
       const restaurantsList = data.restaurants.map(each => ({
         id: each.id,
         imageUrl: each.image_url,
@@ -112,9 +116,11 @@ class Home extends Component {
         restaurantsApiResponseStatus: apiResponsesList.success,
         restaurantsList,
       })
-      console.log(restaurantsList, restaurantsList.length)
     } else {
-      this.setState({restaurantsApiResponseStatus: apiResponsesList.failure})
+      this.setState({
+        restaurantsApiResponseStatus: apiResponsesList.failure,
+        sortByValue,
+      })
     }
   }
 
@@ -122,7 +128,7 @@ class Home extends Component {
     const {id, imageUrl, name, userRating, cuisine} = item
     const {rating, ratingColor, totalReviews} = userRating
     return (
-      <Link to={`/restaurant/${id}`} className="link">
+      <Link to={`/restaurant/${id}`} className="link" key={id}>
         <li className="restaurant-Item" testid="restaurant-item" key={id}>
           <img src={imageUrl} alt="restaurant" className="restaurant-image" />
           <div className="restaurant-details">
@@ -157,6 +163,8 @@ class Home extends Component {
       this.setState(
         prevState => ({
           activePage: prevState.activePage - 1,
+          searchInput: '',
+          searchText: '',
         }),
         this.getRestaurantsData,
       )
@@ -165,10 +173,12 @@ class Home extends Component {
 
   onClickRightPagination = () => {
     const {activePage} = this.state
-    if (activePage < 5) {
+    if (activePage < 4) {
       this.setState(
         prevState => ({
           activePage: prevState.activePage + 1,
+          searchInput: '',
+          searchText: '',
         }),
         this.getRestaurantsData,
       )
@@ -179,6 +189,15 @@ class Home extends Component {
     this.setState({sortByValue: event.target.value}, this.getRestaurantsData)
   }
 
+  onChangeText = event => {
+    this.setState({searchText: event.target.value})
+  }
+
+  Search = () => {
+    const {searchText} = this.state
+    this.setState({searchInput: searchText}, this.getRestaurantsData)
+  }
+
   render() {
     const {
       offersList,
@@ -187,8 +206,9 @@ class Home extends Component {
       restaurantsApiResponseStatus,
       activePage,
       sortByValue,
+      searchText,
     } = this.state
-    console.log(sortByValue)
+    console.log(restaurantsList)
 
     const offersSlider = () => {
       const settings = {
@@ -201,18 +221,27 @@ class Home extends Component {
       return (
         <Slider {...settings} className="slider-container">
           {offersList.map(each => (
-            <li className="image-container">
-              <img
-                src={each.imageUrl}
-                alt="offer"
-                key={each.id}
-                className="offer-image"
-              />
+            <li className="image-container" key={each.id}>
+              <img src={each.imageUrl} alt="offer" className="offer-image" />
             </li>
           ))}
         </Slider>
       )
     }
+
+    const renderNoRestaurantsView = () => (
+      <div className="failure-container">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+          alt="no restaurants"
+          className="image"
+        />
+        <h1 className="heading">No Search results found</h1>
+        <p className="Description">
+          Try different key words or remove search filter
+        </p>
+      </div>
+    )
 
     const renderOffersResult = () => {
       switch (offersApiResponseStatus) {
@@ -224,6 +253,58 @@ class Home extends Component {
           return null
       }
     }
+
+    const searchBar = () => (
+      <div className="search-container">
+        <input
+          className="search"
+          type="search"
+          placeholder="Search"
+          value={searchText}
+          onChange={this.onChangeText}
+        />
+        <button
+          className="btn"
+          type="button"
+          testid="searchButton"
+          onClick={this.Search}
+        >
+          <BsSearch className="search-icon" />
+        </button>
+      </div>
+    )
+
+    const paginationButtons = () => (
+      <div className="page-number-container">
+        <button
+          type="button"
+          className="pagination-btn"
+          testid="pagination-left-button"
+          onClick={this.onClickLeftPagination}
+        >
+          <img
+            src="https://res.cloudinary.com/dh8afj2yd/image/upload/v1670917130/Mini%20Projects%20Library%20-%20tastyKitchensApp/Icon_xhj9w6.jpg"
+            alt="pagination"
+            className="pagination"
+          />
+        </button>
+        <p className="Page">
+          <span testid="active-page-number">{activePage}</span> of 4
+        </p>
+        <button
+          type="button"
+          className="pagination-btn"
+          testid="pagination-right-button"
+          onClick={this.onClickRightPagination}
+        >
+          <img
+            src="https://res.cloudinary.com/dh8afj2yd/image/upload/v1670917055/Mini%20Projects%20Library%20-%20tastyKitchensApp/Icon_gxpzyi.png"
+            alt="pagination"
+            className="pagination"
+          />
+        </button>
+      </div>
+    )
 
     const renderRestaurantsDetails = (
       <div className="details-container">
@@ -246,7 +327,7 @@ class Home extends Component {
               </option>
               <option
                 key={sortByOptions[1].id}
-                selected
+                defaultValue
                 value={sortByOptions[1].value}
               >
                 {sortByOptions[1].displayText}
@@ -255,38 +336,18 @@ class Home extends Component {
           </div>
         </div>
         <hr className="hr-line" />
+        {searchBar()}
         <ul className="restaurants-list-container">
           {restaurantsList.map(item => this.restaurantItem(item))}
         </ul>
-        <div className="page-number-container">
-          <button
-            type="button"
-            className="pagination-btn"
-            testid="pagination-left-button"
-            onClick={this.onClickLeftPagination}
-          >
-            <img
-              src="https://res.cloudinary.com/dh8afj2yd/image/upload/v1670917130/Mini%20Projects%20Library%20-%20tastyKitchensApp/Icon_xhj9w6.jpg"
-              alt="pagination"
-              className="pagination"
-            />
-          </button>
-          <p className="Page">
-            <span testid="active-page-number">{activePage}</span> of 4
-          </p>
-          <button
-            type="button"
-            className="pagination-btn"
-            testid="pagination-right-button"
-          >
-            <img
-              src="https://res.cloudinary.com/dh8afj2yd/image/upload/v1670917055/Mini%20Projects%20Library%20-%20tastyKitchensApp/Icon_gxpzyi.png"
-              alt="pagination"
-              className="pagination"
-              onClick={this.onClickRightPagination}
-            />
-          </button>
-        </div>
+        {paginationButtons()}
+      </div>
+    )
+
+    const renderFailureView = () => (
+      <div className="details-container">
+        {searchBar()}
+        {renderNoRestaurantsView()}
       </div>
     )
 
@@ -296,6 +357,8 @@ class Home extends Component {
           return this.renderRestaurantsLoader()
         case apiResponsesList.success:
           return renderRestaurantsDetails
+        case apiResponsesList.failure:
+          return renderFailureView()
         default:
           return null
       }

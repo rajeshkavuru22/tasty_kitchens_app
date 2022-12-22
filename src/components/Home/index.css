@@ -177,6 +177,55 @@
   margin: 0px;
   padding: 0px;
 }
+.search-container {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #b6c5ff;
+  border-radius: 5px;
+  margin: 10px;
+  margin-bottom: 20px;
+}
+.search {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  flex-grow: 1;
+}
+.btn {
+  background-color: #8294ac;
+  border: none;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.search-icon {
+  color: #f1f1f1;
+}
+.failure-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.image {
+  width: 300px;
+  height: 300px;
+  align-self: center;
+  margin-bottom: 20px;
+}
+.heading {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.Description {
+  font-size: 14px;
+  color: #0f0f0f;
+}
 @media screen and (min-width: 768px) {
   .body-container {
     padding-left: 100px;
@@ -197,5 +246,9 @@
   .restaurants-list-container {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+  .search-container {
+    align-self: flex-end;
+    width: 400px;
   }
 }

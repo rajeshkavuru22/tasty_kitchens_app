@@ -70,13 +70,6 @@
 .tabs-container {
   display: none;
 }
-.popup-tabs {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #ffffff;
-  width: 100%;
-}
 .lg-tabs-list {
   display: none;
 }
@@ -84,11 +77,18 @@
   display: flex;
   flex-direction: row;
   background-color: #ffffff;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  height: 200px;
+  height: 20vh;
   padding: 10px;
-  border-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  margin-top: 80px;
+}
+.popup-content {
+  width: 100vw;
+  height: 100vh;
 }
 @media screen and (min-width: 768px) {
   .navbar {

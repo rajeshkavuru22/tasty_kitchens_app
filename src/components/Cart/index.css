@@ -72,12 +72,6 @@
   color: #183b56;
   margin: 0px;
 }
-.NAME {
-  font-size: 16px;
-  color: #183b56;
-  margin: 0px;
-  display: none;
-}
 .total-price {
   color: #183b56;
   align-self: center;
@@ -96,6 +90,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 20px;
 }
 .item-details {
   display: flex;
@@ -104,7 +99,7 @@
 .columns-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   display: none;
 }
@@ -112,6 +107,8 @@
   color: #183b56;
   align-self: center;
   font-size: 18px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .item-image {
   width: 120px;
@@ -136,15 +133,15 @@
   .NAME {
     display: flex;
   }
-  .item-name {
-    display: none;
-  }
   .item-details {
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-grow: 1;
   }
   .columns-container {
     display: flex;
+  }
+  .img-name-container {
+    margin: 0px;
   }
 }
