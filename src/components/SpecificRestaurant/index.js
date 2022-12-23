@@ -140,6 +140,7 @@ class SpecificRestaurant extends Component {
         localStorage.setItem('cartData', JSON.stringify(cartItems))
       }
     }
+    console.log(cartData)
 
     const {
       name,
