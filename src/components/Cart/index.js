@@ -2,13 +2,15 @@ import {Component} from 'react'
 import {BiRupee} from 'react-icons/bi'
 import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
+import Cookies from 'js-cookie'
 import Header from '../Header'
 import Footer from '../Footer'
 import Counter from '../Counter'
+import PaymentSuccessful from '../PaymentSuccessful'
 import './index.css'
 
 class Cart extends Component {
-  state = {cartData: [], isLoading: false}
+  state = {cartData: [], isLoading: false, orderPlaced: false}
 
   componentDidMount() {
     this.gettingCartData()
@@ -61,16 +63,15 @@ class Cart extends Component {
   )
 
   placeOrder = () => {
-    const {history} = this.props
+    this.setState({orderPlaced: true})
     localStorage.clear()
-    history.replace('/order-successful')
   }
 
   cartItem = Item => {
     const {id, name, imageUrl, cost, itemsInCart} = Item
 
     return (
-      <li className="cart-item" testid="cartItem" key={id}>
+      <div className="cart-item" testid="cartItem" key={id}>
         <div className="img-name-container">
           <img src={imageUrl} alt="food item" className="item-image" />
         </div>
@@ -88,7 +89,7 @@ class Cart extends Component {
             <p className="price">{cost}.00</p>
           </div>
         </div>
-      </li>
+      </div>
     )
   }
 
@@ -111,8 +112,15 @@ class Cart extends Component {
     </div>
   )
 
+  onLogout = () => {
+    const {history} = this.props
+    Cookies.remove('jwt_token')
+    history.replace('/login')
+  }
+
   render() {
-    const {cartData, isLoading} = this.state
+    const {cartData, isLoading, orderPlaced} = this.state
+    console.log(this.props)
 
     const cartItemsView = totalPrice => (
       <>
@@ -122,9 +130,9 @@ class Cart extends Component {
             <p className="column">Quantity</p>
             <p className="column">Price</p>
           </div>
-          <ul className="cart-container">
+          <div className="cart-container">
             {cartData.map(Item => this.cartItem(Item))}
-          </ul>
+          </div>
           <hr className="hr_line" />
           <div className="order-details-container">
             <h1 className="order-heading">Order Total:</h1>
@@ -147,7 +155,7 @@ class Cart extends Component {
       </>
     )
 
-    const renderCartView = () => {
+    const renderCartItemsView = () => {
       if (cartData.length !== 0) {
         const initialValue = 0
         const totalPrice = cartData.reduce(
@@ -160,14 +168,21 @@ class Cart extends Component {
       return this.renderEmptyCartView()
     }
 
+    const renderResult = () => {
+      if (orderPlaced) {
+        return <PaymentSuccessful />
+      }
+      return renderCartItemsView()
+    }
+
     const result = localStorage.getItem('cartData')
     const Result = JSON.parse(result)
     console.log(`local data = ${Result}`)
 
     return (
       <div className="app-container">
-        <Header />
-        {isLoading ? this.renderLoader() : renderCartView()}
+        <Header logout={this.onLogout} />
+        {isLoading ? this.renderLoader() : renderResult()}
       </div>
     )
   }

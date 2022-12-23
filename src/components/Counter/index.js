@@ -1,44 +1,38 @@
-import {Component} from 'react'
-
 import './index.css'
 
-class Counter extends Component {
-  onIncrementItem = () => {
-    const {incrementItem, Item} = this.props
+const Counter = props => {
+  const {incrementItem, decrementItem, itemsInCart, Item} = props
+
+  const onIncrementItem = () => {
     incrementItem(Item)
   }
 
-  onDecrementItem = () => {
-    const {decrementItem, Item} = this.props
+  const onDecrementItem = () => {
     decrementItem(Item)
   }
-
-  render() {
-    const {itemsInCart} = this.props
-    return (
-      <div className="item-count-container">
-        <button
-          type="button"
-          className="count-btn"
-          testid="decrement-quantity"
-          onClick={this.onDecrementItem}
-        >
-          -
-        </button>
-        <p className="pages" testid="item-quantity">
-          {itemsInCart}
-        </p>
-        <button
-          type="button"
-          className="count-btn"
-          testid="increment-quantity"
-          onClick={this.onIncrementItem}
-        >
-          +
-        </button>
-      </div>
-    )
-  }
+  return (
+    <div className="item-count-container">
+      <button
+        type="button"
+        className="count-btn"
+        testid="decrement-quantity"
+        onClick={onDecrementItem}
+      >
+        -
+      </button>
+      <p className="pages" testid="item-quantity">
+        {itemsInCart}
+      </p>
+      <button
+        type="button"
+        className="count-btn"
+        testid="increment-quantity"
+        onClick={onIncrementItem}
+      >
+        +
+      </button>
+    </div>
+  )
 }
 
 export default Counter

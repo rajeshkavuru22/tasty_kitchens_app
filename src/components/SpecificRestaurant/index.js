@@ -128,6 +128,12 @@ class SpecificRestaurant extends Component {
     </div>
   )
 
+  onLogout = () => {
+    const {history} = this.props
+    Cookies.remove('jwt_token')
+    history.replace('/login')
+  }
+
   render() {
     const {restaurantDetails, foodItemsList, apiResponseStatus} = this.state
 
@@ -210,7 +216,7 @@ class SpecificRestaurant extends Component {
 
     return (
       <div className="app-container">
-        <Header />
+        <Header logout={this.onLogout} />
         {renderResult()}
         <Footer />
       </div>

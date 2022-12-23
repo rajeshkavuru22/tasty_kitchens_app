@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom'
 import {BsCheckCircleFill} from 'react-icons/bs'
-import Header from '../Header'
 import './index.css'
 
 const PaymentSuccessful = () => {
@@ -20,12 +19,7 @@ const PaymentSuccessful = () => {
     </>
   )
 
-  return (
-    <div className="app-container">
-      <Header />
-      <div className="payment-container">{paymentSuccess()}</div>
-    </div>
-  )
+  return <div className="payment-container">{paymentSuccess()}</div>
 }
 
 export default PaymentSuccessful

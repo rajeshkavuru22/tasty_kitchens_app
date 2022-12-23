@@ -88,10 +88,10 @@ class Home extends Component {
         authorization: `Bearer ${JwtToken}`,
       },
     }
+    console.log(url)
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
-      console.log(data, activePage, searchInput, offset)
       const restaurantsList = data.restaurants.map(each => ({
         id: each.id,
         imageUrl: each.image_url,
@@ -157,6 +157,12 @@ class Home extends Component {
     </div>
   )
 
+  onLogout = () => {
+    const {history} = this.props
+    Cookies.remove('jwt_token')
+    history.replace('/login')
+  }
+
   onClickLeftPagination = () => {
     const {activePage} = this.state
     if (activePage > 1) {
@@ -195,7 +201,10 @@ class Home extends Component {
 
   Search = () => {
     const {searchText} = this.state
-    this.setState({searchInput: searchText}, this.getRestaurantsData)
+    this.setState(
+      {searchInput: searchText, activePage: 1},
+      this.getRestaurantsData,
+    )
   }
 
   render() {
@@ -208,7 +217,7 @@ class Home extends Component {
       sortByValue,
       searchText,
     } = this.state
-    console.log(restaurantsList)
+    console.log(this.props)
 
     const offersSlider = () => {
       const settings = {
@@ -375,7 +384,7 @@ class Home extends Component {
 
     return (
       <div className="app-container">
-        <Header />
+        <Header logout={this.onLogout} />
         {renderResult()}
         <Footer />
       </div>
